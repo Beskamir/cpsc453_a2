@@ -65,6 +65,8 @@ Position translate;
 
 vector<vector<ControlPoint>> controlPoints;
 vector<Mesh> splines;
+ShaderProgram mShaders;
+ShaderProgram lineShader;
 
 GLuint imageStyle=0;
 bool mousePressed = false;
@@ -75,18 +77,22 @@ int main(int argc, char *argv[]);
 void loadImage(GLuint *mTexture, int *imageWidth, int *imageHeight);
 
 void mainRender();
-void renderToScreen(ShaderProgram mainShaders, vertexArray &verts);
+void renderToScreen(vertexArray &verts);
 void drawImage(vertexArray &verts);
 void drawPoints();
 
 void addControlPoint();
-void setTextureUsage(ShaderProgram mShaders, int textureUsage);
+void setTextureUsage(int textureUsage);
 void convertControlPoints2Spline();
 void convertControlPoints2Loop();
 void controlPoints2Spline(float loopMax, bool drawLoop);
 
-void setImageStyle(ShaderProgram shader);
-void setupTransformations(ShaderProgram shader);
+void drawCurves();
+glm::mat2x4 getCtrlVerts(int p0, int p1, int p2, int p3, int lastCtrlPoints);
+glm::mat3x4 getCtrlColors(int p0, int p1, int p2, int p3, int lastCtrlPoints);
+
+void setImageStyle();
+void setupTransformations();
 Mesh genImagePlane(int imageWidth,int imageHeight);
 Position getMouseLocation();
 

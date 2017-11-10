@@ -73,7 +73,7 @@ void scroll_callback(GLFWwindow *window, double xoffset, double yoffset) {
 }
 
 void mouse_button_callback(GLFWwindow *window, int button, int action, int mods) {
-    if (button == GLFW_MOUSE_BUTTON_MIDDLE && action == GLFW_PRESS){
+    if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS){
         mousePressed=true;
         Position currentMouse;
         double xpos, ypos;
@@ -83,7 +83,7 @@ void mouse_button_callback(GLFWwindow *window, int button, int action, int mods)
         lastMousePos=currentMouse;
         //cout << "mouse down" <<endl;
     }
-    if (button == GLFW_MOUSE_BUTTON_MIDDLE && action == GLFW_RELEASE){
+    if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_RELEASE){
         mousePressed=false;
         //cout << "mouse up" <<endl;
     }

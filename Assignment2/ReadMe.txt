@@ -30,7 +30,11 @@ Keyboard inputs of note:
         e = grey scale image
 
     Point drawing:
-        Right click
+        s = enter point drawing mode (works on a toggle)
+        left click = place points
+
+        o = draw closed loop
+        L = draw open curve
 
 Known issues:
 
@@ -58,7 +62,6 @@ Citations and credit:
     http://steve.hollasch.net/cgindex/curves/catmull-rom.html 
     https://www.youtube.com/watch?v=9_aJGUTePYo
     http://www.wolframalpha.com/input/?i=y%3D0.5*%7B0%5E3,0%5E2,0,1%7D*%7B%7B-1,3,-3,1%7D,%7B2,-5,4,-1%7D,%7B-1,0,1,0%7D,%7B0,2,0,0%7D%7D*%7B%7B-1,-1%7D,%7B-1,1%7D,%7B1,1%7D,%7B1,-1%7D%7D
-    
 
 	Resources for getting shit to work on Windows:
 	https://gist.github.com/romanlarionov/2a22e77be3f2b574a2bd
@@ -70,7 +73,3 @@ Citations and credit:
     Images from:
     CaliforniaCondor.jpg - My friend Rukiya Hassan painted it as I was working on graphics
     Other images, idk I had them on my desktop for ages.
-
-
-Note to self: Useful for drawing lines
-    https://vicrucann.github.io/tutorials/osg-shader-3dlines/

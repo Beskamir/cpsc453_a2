@@ -1,16 +1,14 @@
+// ShaderProgram class based on TA's game of life with some help from Daniel Dastoor.
+
 #include "ShaderProgram.h"
 
+ShaderProgram::ShaderProgram() = default;
 
-ShaderProgram::ShaderProgram()
-{
+ShaderProgram::~ShaderProgram(){
+    id = 0;
 }
 
-ShaderProgram::~ShaderProgram()
-{
-}
-
-bool ShaderProgram::attachShader(string path, GLenum type)
-{
+bool ShaderProgram::attachShader(string path, GLenum type){
 	if (id <= 0) {
 		id = glCreateProgram();
 		//if (OpenGL::error("glCreateProgram"))
@@ -53,14 +51,13 @@ bool ShaderProgram::attachShader(string path, GLenum type)
 	glAttachShader(id, shader);
 	//if (OpenGL::error("glAttachShader"))
 	//	return false;
+	return true;
 }
 
-bool ShaderProgram::link()
-{
+bool ShaderProgram::link(){
 	if (id <= 0) {
 		return false;
 	}
-
 	glLinkProgram(id);
 	//if (OpenGL::error("glLinkProgram"))
 	//	return false;
@@ -83,59 +80,13 @@ bool ShaderProgram::link()
 	return true;
 }
 
-bool ShaderProgram::setInt(string variable, GLint value)
-{
-	// Get the uniform's location, if possible
-	GLint location = glGetUniformLocation(id, variable.c_str());
-	if (location < 0)
-		return false;
-
-	glUniform1i(location, value);
-	return true;
-}
-
-bool ShaderProgram::setFloat(string variable, GLfloat value)
-{
-	// Get the uniform's location, if possible
-	GLint location = glGetUniformLocation(id, variable.c_str());
-	if (location < 0)
-		return false;
-
-	glUniform1f(location, value);
-	return true;
-}
-
-bool ShaderProgram::setVec2(string variable, GLfloat value1, GLfloat value2)
-{
-	// Get the uniform's location, if possible
-	GLint location = glGetUniformLocation(id, variable.c_str());
-	if (location < 0)
-		return false;
-
-	glUniform2f(location, value1, value2);
-	return true;
-}
-
-bool ShaderProgram::setMat4(string variable, glm::mat4 mat)
-{
-	// Get the uniform's location if possible
-	GLint location = glGetUniformLocation(id, variable.c_str());
-	if (location < 0)
-		return false;
-
-	glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(mat));
-	return true;
-}
-
-bool ShaderProgram::bind()
-{
+bool ShaderProgram::bind(){
 	glUseProgram(id);
 	//if (OpenGL::error("glUseProgram"))
 	//	return false;
 	return true;
 }
 
-void ShaderProgram::unbind()
-{
+void ShaderProgram::unbind(){
 	glUseProgram(0);
 }

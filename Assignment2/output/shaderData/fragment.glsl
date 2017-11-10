@@ -1,7 +1,6 @@
 #version 410
 
 in vec3 vertexColor;
-//in vec4 testColors;
 in vec2 uvCoord;
 
 out vec4 FragmentColour;
@@ -34,7 +33,6 @@ void main() {
 
     //Check whether to use the texture or not.
     // If points or line then use vertex colors if image then use the image colors
-
     if(useTexture==1){
         FragmentColour = imageData;
     }
