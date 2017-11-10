@@ -34,7 +34,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 // Include shader class
-#include "shader.h"
+#include "ShaderProgram.h"
 #include "vertexArray.h"
 
 using namespace std;
@@ -75,18 +75,18 @@ int main(int argc, char *argv[]);
 void loadImage(GLuint *mTexture, int *imageWidth, int *imageHeight);
 
 void mainRender();
-void renderToScreen(Shader mainShaders, vertexArray &verts);
+void renderToScreen(ShaderProgram mainShaders, vertexArray &verts);
 void drawImage(vertexArray &verts);
 void drawPoints();
 
 void addControlPoint();
-void setTextureUsage(Shader mShaders, int textureUsage);
+void setTextureUsage(ShaderProgram mShaders, int textureUsage);
 void convertControlPoints2Spline();
 void convertControlPoints2Loop();
 void controlPoints2Spline(float loopMax, bool drawLoop);
 
-void setImageStyle(Shader shader);
-void setupTransformations(Shader shader);
+void setImageStyle(ShaderProgram shader);
+void setupTransformations(ShaderProgram shader);
 Mesh genImagePlane(int imageWidth,int imageHeight);
 Position getMouseLocation();
 

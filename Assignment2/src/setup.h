@@ -18,8 +18,8 @@ void loadImage(GLuint *mTexture, int *imageWidth, int *imageHeight) {
     //Texture parameters
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_WRAP_BORDER);
-    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_WRAP_BORDER);
+    //glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_WRAP_BORDER);
+    //glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_WRAP_BORDER);
 
     //string filename="imageData/texture.jpg";
     //string filename="imageData/widerImage.jpg";
@@ -52,7 +52,8 @@ void loadImage(GLuint *mTexture, int *imageWidth, int *imageHeight) {
 
     stbi_image_free(image);
 }
-
+// Initialize GLEW if on windows only
+#ifdef _WIN32
 //Setup glew
 bool initGLEW() {
     // Set this to true so GLEW knows to use a modern approach to retrieving function pointers and extensions
@@ -64,6 +65,8 @@ bool initGLEW() {
     }
     return true;
 }
+#endif
+
 
 // Create a GLFWwindow object that we can use for GLFW's functions
 bool setupWindow() {

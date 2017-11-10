@@ -41,8 +41,12 @@ void mainRender(){
     // Define the viewport dimensions
     glViewport(0, 0, window_width, window_height);
 
+    //ShaderProgram mShaders();
     // Build and compile the shader programs
-    Shader mShaders("shaderData/vertex.glsl", "shaderData/fragment.glsl", "shaderData/tessControl.glsl", "shaderData/tessEvaluation.glsl","shaderData/geometry.glsl");
+    ShaderProgram mShaders;
+    mShaders.attachShader("shaderData/vertex.glsl", GL_VERTEX_SHADER);
+    mShaders.attachShader("shaderData/fragment.glsl", GL_FRAGMENT_SHADER);
+    mShaders.link();
 
     GLuint mTexture=0;
     int imageWidth=0, imageHeight=0;
@@ -71,13 +75,13 @@ void mainRender(){
 }
 
 
-void renderToScreen(Shader mShaders, vertexArray &verts) {
+void renderToScreen(ShaderProgram mShaders, vertexArray &verts) {
     // clear screen to a dark grey colour
     glClearColor(0.15f, 0.15f, 0.15f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
     // Draw the triangle
-    mShaders.Use();
+    mShaders.bind();
     //Setup the transformations that will be used to move the image, curves, points, etc.
     setupTransformations(mShaders);
 
@@ -149,24 +153,24 @@ void drawImage(vertexArray &verts) {
     glBindVertexArray(0);
 }
 
-void setTextureUsage(Shader mShaders, int textureUsage) {
-    GLint imageStyleLocation = glGetUniformLocation(mShaders.Program, "useTexture");
+void setTextureUsage(ShaderProgram mShaders, int textureUsage) {
+    GLint imageStyleLocation = glGetUniformLocation(mShaders.id, "useTexture");
     glUniform1i(imageStyleLocation,textureUsage);
 }
 
 
-void setImageStyle(Shader mShaders) {
-    GLint imageStyleLocation = glGetUniformLocation(mShaders.Program, "imageStyle");
+void setImageStyle(ShaderProgram mShaders) {
+    GLint imageStyleLocation = glGetUniformLocation(mShaders.id, "imageStyle");
     glUniform1i(imageStyleLocation,imageStyle);
 }
 
-void setupTransformations(Shader mShaders) {
+void setupTransformations(ShaderProgram mShaders) {
     //Create transformations
     glm::mat4 transformFunction;
     transformFunction = glm::scale(transformFunction, glm::vec3(scaleFactor, scaleFactor, 1.0f));
     transformFunction = glm::translate(transformFunction, glm::vec3(translate.x, translate.y, 0.0f));
     // Get matrix's uniform location and set matrix
-    GLint transformationLocation = glGetUniformLocation(mShaders.Program, "transformation");
+    GLint transformationLocation = glGetUniformLocation(mShaders.id, "transformation");
     glUniformMatrix4fv(transformationLocation, 1, GL_FALSE, glm::value_ptr(transformFunction));
 }
 
