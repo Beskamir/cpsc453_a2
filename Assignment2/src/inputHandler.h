@@ -5,6 +5,8 @@
 #ifndef ASSIGNMENT2_INPUTHANDLER_H
 #define ASSIGNMENT2_INPUTHANDLER_H
 
+void changeColor(int i, float change);
+
 #include "main.h"
 
 
@@ -50,17 +52,43 @@ void key_callback(GLFWwindow *window, int key, int scancode, int action, int mod
                 showControlPoints=true;
             }
         }
+        if(showControlPoints){
+            if(key==GLFW_KEY_T){
+                changeColor(0,0.1f);
+                //cout << "Increase red to: " << currentColor[0]<<endl;
+            }
+            if(key==GLFW_KEY_Y){
+                changeColor(1,0.1f);
+                //cout << "Increase green to: " << currentColor[1]<<endl;
+            }
+            if(key==GLFW_KEY_U){
+                changeColor(2,0.1f);
+                //cout << "Increase blue to: " << currentColor[2]<<endl;
+            }
 
-        int lastCtrlPoints=controlPoints.size()-1;
-        if(key==GLFW_KEY_L&&controlPoints[lastCtrlPoints].size()>1){
-            convertControlPoints2Spline();
-        }
-        if(key==GLFW_KEY_O&&controlPoints[lastCtrlPoints].size()>1){
-            convertControlPoints2Loop();
+            if(key==GLFW_KEY_G){
+                changeColor(0,-0.1f);
+                //cout << "Decrease red to: " << currentColor[0]<<endl;
+            }
+            if(key==GLFW_KEY_H){
+                changeColor(1,-0.1f);
+                //cout << "Decrease green to: " << currentColor[1]<<endl;
+            }
+            if(key==GLFW_KEY_J){
+                changeColor(2,-0.1f);
+                //cout << "Decrease blue to: " << currentColor[2]<<endl;
+            }
+
+            int lastCtrlPoints=controlPoints.size()-1;
+            if(key==GLFW_KEY_L&&controlPoints[lastCtrlPoints].size()>1){
+                convertControlPoints2Spline();
+            }
+            if(key==GLFW_KEY_O&&controlPoints[lastCtrlPoints].size()>1){
+                convertControlPoints2Loop();
+            }
         }
     }
 }
-
 
 void scroll_callback(GLFWwindow *window, double xoffset, double yoffset) {
     //cout << xoffset << ":"<< yoffset<<endl;

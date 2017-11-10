@@ -63,6 +63,7 @@ float scalingSpeed = 0.025f;
 Position lastMousePos;
 Position translate;
 
+vector<float> currentColor = {0,0,0,1.0};
 vector<vector<ControlPoint>> controlPoints;
 vector<Mesh> splines;
 ShaderProgram mShaders;
@@ -92,7 +93,7 @@ glm::mat2x4 getCtrlVerts(int p0, int p1, int p2, int p3, int lastCtrlPoints);
 glm::mat3x4 getCtrlColors(int p0, int p1, int p2, int p3, int lastCtrlPoints);
 
 void setImageStyle();
-void setupTransformations();
+void setupTransformations(ShaderProgram shaderProgram);
 Mesh genImagePlane(int imageWidth,int imageHeight);
 Position getMouseLocation();
 

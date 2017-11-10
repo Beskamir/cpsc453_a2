@@ -1,4 +1,10 @@
 #version 410
+///Copied code from https://vicrucann.github.io/tutorials/osg-shader-3dlines/ since it
+/// was a much better implmentation of lines to thin triangles than what I did in
+/// the previous assignment and this assignment isn't testing our ability to draw
+/// thin rectangles so as long as I give proper credit (which I currently am) it
+/// should be okay. Also I've left all of her comments untampered with even if I
+/// made slight alterations to her code.
 
 /* \brief Geometry GLSL shader that demonstrates how to draw basic thick and smooth lines in 3D.
  * This file is a part of shader-3dcurve example (https://github.com/vicrucann/shader-3dcurve).
@@ -8,15 +14,14 @@
  * \copyright MIT license
 */
 
-uniform float Thickness=0.5;
-uniform vec2 Viewport={0,0};
-uniform float MiterLimit=0.2;
+uniform float Thickness=7.5;
+uniform vec2 Viewport={1024,1024};
+uniform float MiterLimit=1;
 
 layout(lines_adjacency) in;
-layout(triangle_strip, max_vertices = 7) out;
+layout(triangle_strip, max_vertices = 50) out;
 
 in VertexData{
-    vec2 mTexCoord;
     vec4 mColor;
 } VertexIn[4];
 
@@ -142,7 +147,8 @@ void drawSegment(vec2 points[4], vec4 colors[4], float zValues[4])
     EndPrimitive();
 }
 
-void main(void){
+void main(void)
+{
     // 4 points
     vec4 Points[4];
     Points[0] = gl_in[0].gl_Position;

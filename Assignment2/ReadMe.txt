@@ -30,14 +30,39 @@ Keyboard inputs of note:
         e = grey scale image
 
     Point drawing:
+        #NOTE: must be in point drawing mode to draw the curve or change a point's color
         s = enter point drawing mode (works on a toggle)
         left click = place points
 
+        #curve drawing:
         o = draw closed loop
         L = draw open curve
 
-Known issues:
+        #point/curve colors:
+        t = increase red value
+        y = increase green value
+        u = increase blue value
+        g = decrease red value
+        h = decrease green value
+        j = decrease blue value
 
+Features:
+    zooming,
+    settable zooming speed
+    panning,
+    images of varying aspect ratios
+    curves
+    control points
+    different colored curves/control points,
+    
+    BonusImage.PNG is my fantastic artwork using the tower.jpg image 
+    
+    Basically anything the assignment specified should be done and had a grade value associated has been done.
+
+Known issues:
+    Last I tested it it did not run on linux.
+        I think the issue was that shaders weren't linking correctly since they may not have been stored properly.
+        Maybe this issue somehow got fixed by accident when I tried to fix a couple other things
 
 
 Citations and credit:
@@ -73,3 +98,10 @@ Citations and credit:
     Images from:
     CaliforniaCondor.jpg - My friend Rukiya Hassan painted it as I was working on graphics
     Other images, idk I had them on my desktop for ages.
+
+    geometry shader which allows for a nice and thick line by using triangles thanks to:
+     https://vicrucann.github.io/tutorials/osg-shader-3dlines/
+     Although I could have tried reusing my code from the previous assignment it was really messy, possibly specific to lines that had a slope of 0, infinity, 1, and -1 and it was't even written in glsl...
+     Basically my lines to thin triangles was trash and this assignment doesn't grade on our ability to draw thin triangles so I more or less copied someone else's code and included all of her comments. Hopefully that's okay for such a large chunk of code.
+
+     Circular points thanks to: https://stackoverflow.com/questions/27098315/render-large-circular-points-in-modern-opengl

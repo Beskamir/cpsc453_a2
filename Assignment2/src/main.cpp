@@ -45,18 +45,20 @@ void mainRender(){
         cout << "Error attaching fragment shader"<<endl;
     if (!mShaders.link())
         cout<<"Error linking shader program"<<endl;
-
-    //if (!lineShader.attachShader("shaderData/vertex.glsl", GL_VERTEX_SHADER))
-    //    cout << "Error attaching vertex shader"<<endl;
-    //if (!lineShader.attachShader("shaderData/fragment.glsl", GL_FRAGMENT_SHADER))
-    //    cout << "Error attaching fragment shader"<<endl;
-    //if (!lineShader.attachShader("shaderData/geometry.glsl",GL_GEOMETRY_SHADER))
-    //    cout << "Error attaching geometry shader"<<endl;
-    //if (!lineShader.link())
-    //    cout<<"Error linking shader program"<<endl;
     //mShaders.attachShader("shaderData/vertex.glsl", GL_VERTEX_SHADER);
     //mShaders.attachShader("shaderData/fragment.glsl", GL_FRAGMENT_SHADER);
     //mShaders.link();
+
+
+    if (!lineShader.attachShader("shaderData/lineVert.glsl", GL_VERTEX_SHADER))
+        cout << "Error attaching vertex shader"<<endl;
+    if (!lineShader.attachShader("shaderData/geometry.glsl",GL_GEOMETRY_SHADER))
+        cout << "Error attaching geometry shader"<<endl;
+    if (!lineShader.attachShader("shaderData/lineFrag.glsl", GL_FRAGMENT_SHADER))
+        cout << "Error attaching fragment shader"<<endl;
+    if (!lineShader.link())
+        cout<<"Error linking shader program"<<endl;
+
 
     GLuint mTexture=0;
     int imageWidth=0, imageHeight=0;
@@ -93,20 +95,27 @@ void renderToScreen(vertexArray &verts) {
     // Draw the triangle
     mShaders.bind();
     //Setup the transformations that will be used to move the image, curves, points, etc.
-    setupTransformations();
+    setupTransformations(mShaders);
 
     //Set image style and whether using a texture or vertex colors
     setImageStyle();
     setTextureUsage(1);
     drawImage(verts); //Draw the image
+    glUseProgram(0);
 
+    //Draw Lines
+    lineShader.bind();
+    setupTransformations(lineShader);
+    setTextureUsage(2);
+    drawCurves();
+    glUseProgram(0);
+
+    mShaders.bind();
+    //Draw Control Points
     if(showControlPoints){
         setTextureUsage(0);
         drawPoints();
     }
-
-    setTextureUsage(2);
-    drawCurves();
 
     glUseProgram(0);
 }
@@ -120,7 +129,7 @@ void drawCurves() {
             sLines.addBuffer("t", 2, splines[i].texture);
             glBindVertexArray(sLines.id);
             //glLineWidth(50.0f);
-            glDrawArrays(GL_LINE_STRIP_ADJACENCY, 0, sLines.count);
+            glDrawArrays(GL_LINE_STRIP_ADJACENCY_EXT, 0, sLines.count);
             //glEnable(GL_PROGRAM_POINT_SIZE);
             glBindVertexArray(0);
         }
@@ -171,13 +180,13 @@ void setImageStyle() {
     glUniform1i(imageStyleLocation,imageStyle);
 }
 
-void setupTransformations() {
+void setupTransformations(ShaderProgram shaderProgram) {
     //Create transformations
     glm::mat4 transformFunction;
     transformFunction = glm::scale(transformFunction, glm::vec3(scaleFactor, scaleFactor, 1.0f));
     transformFunction = glm::translate(transformFunction, glm::vec3(translate.x, translate.y, 0.0f));
     // Get matrix's uniform location and set matrix
-    GLint transformationLocation = glGetUniformLocation(mShaders.id, "transformation");
+    GLint transformationLocation = glGetUniformLocation(shaderProgram.id, "transformation");
     glUniformMatrix4fv(transformationLocation, 1, GL_FALSE, glm::value_ptr(transformFunction));
 }
 
@@ -195,11 +204,11 @@ void addControlPoint() {
     ControlPoint cPoint;
 
     int lastControlPoints = controlPoints.size()-1;
-    if(lastControlPoints<0){
+    if(lastControlPoints < 0){
         cPoint.vertices={fixedLocation.x,
                          fixedLocation.y,
                          fixedLocation.z};
-        cPoint.colors={0,0,0};
+        cPoint.colors=currentColor;
         cPoint.texture={0,0,0};
         vector<ControlPoint> cPoints;
         cPoints.push_back(cPoint);
@@ -209,7 +218,7 @@ void addControlPoint() {
         cPoint.vertices={fixedLocation.x,
                          fixedLocation.y,
                          fixedLocation.z};
-        cPoint.colors={0,0,0};
+        cPoint.colors=currentColor;
         cPoint.texture={0,0,0};
         controlPoints[lastControlPoints].push_back(cPoint);
     }
@@ -230,7 +239,7 @@ void controlPoints2Spline(float loopMax, bool drawLoop) {
     float t=0;
     int p0,p1,p2,p3;
 
-    for (float i = 0.0f; i < loopMax; i+=0.005f) {
+    for (float i = 0.0f; i < loopMax; i+=0.0005f) {
         if(drawLoop){
             p1=(int)(i);
             p2=(p1+1) % controlPoints[lastCtrlPoints].size();
@@ -242,6 +251,9 @@ void controlPoints2Spline(float loopMax, bool drawLoop) {
             p3 = p2 + 1;
             p0 = p1 - 1;
         }
+        //if(i>loopMax-0.001f){
+        //    i = loopMax;
+        //}
         t=i-int(i);
         glm::vec4 tValues = {t*t*t,t*t,t,1};
         //glm::vec4 tDerivatives = {3*t*t,2*t,1,0};
@@ -298,4 +310,20 @@ void convertControlPoints2Spline() {
     //float loopMax=(float)controlPoints[controlPoints.size()-1].vertices.size()-3.0f;
     float loopMax=(float)controlPoints[controlPoints.size()-1].size()-3.0f;
     controlPoints2Spline(loopMax,false);
+}
+
+void changeColor(int i, float change) {
+    if((currentColor[i]<0.95f&&change>0.0f)||(currentColor[i]>0.05f&&change<0.0f)){
+        currentColor[i]+=change;
+        if(!controlPoints.empty()&&!controlPoints[controlPoints.size()-1].empty()){
+            controlPoints[controlPoints.size()-1][controlPoints[controlPoints.size()-1].size()-1].colors=currentColor;
+        }
+    }
+    if(currentColor[i]<0.05){
+        currentColor[i]=0;
+        if(!controlPoints.empty()&&!controlPoints[controlPoints.size()-1].empty()){
+            controlPoints[controlPoints.size()-1][controlPoints[controlPoints.size()-1].size()-1].colors=currentColor;
+        }
+    }
+    cout << "Current RGB values are: " << currentColor[0]<<", "<<currentColor[1]<<", "<<currentColor[2]<<endl;
 }
