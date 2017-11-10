@@ -5,7 +5,7 @@
 #ifndef ASSIGNMENT2_INPUTHANDLER_H
 #define ASSIGNMENT2_INPUTHANDLER_H
 
-//#include "main.h"
+#include "main.h"
 
 
 void key_callback(GLFWwindow *window, int key, int scancode, int action, int mode) {

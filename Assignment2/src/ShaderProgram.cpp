@@ -1,12 +1,4 @@
 #include "ShaderProgram.h"
-//#include "OpenGL.h"
-#include <fstream>
-#include <sstream>
-#include <iostream>
-#include "glm/gtc/type_ptr.hpp"
-
-using std::cerr;
-using std::endl;
 
 
 ShaderProgram::ShaderProgram()
@@ -124,7 +116,7 @@ bool ShaderProgram::setVec2(string variable, GLfloat value1, GLfloat value2)
 	return true;
 }
 
-bool ShaderProgram::setMat4(string variable, mat4 mat)
+bool ShaderProgram::setMat4(string variable, glm::mat4 mat)
 {
 	// Get the uniform's location if possible
 	GLint location = glGetUniformLocation(id, variable.c_str());
