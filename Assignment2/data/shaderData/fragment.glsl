@@ -12,12 +12,13 @@ uniform int useTexture=1;
 
 void main() {
     //sample image texture and store color data in colarData vector
+//    FragmentColour=vec4(vertexColor,1.0f);
     vec4 imageData = texture(texture1, uvCoord);
-
+    FragmentColour = imageData;
     // Convert to grayscale using NTSC conversion weights
     if(imageStyle==1){
         // Convert to grayscale using NTSC conversion weights
-        vec3 greyScaleWieghting={0.299,0.587,0.114};
+        vec3 greyScaleWieghting=vec3(0.299,0.587,0.114);
         float luminance = dot(imageData.rgb,vec3(0.299,0.587,0.114));
         imageData = vec4(luminance,luminance,luminance,imageData.a);
     }

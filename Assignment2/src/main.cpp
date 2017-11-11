@@ -39,9 +39,9 @@ void mainRender(){
 
     //ShaderProgram mShaders();
     // Build and compile the shader programs
-    if (!mShaders.attachShader("shaderData/vertex.glsl", GL_VERTEX_SHADER))
+    if (!mShaders.attachShader("data/shaderData/vertex.glsl", GL_VERTEX_SHADER))
         cout << "Error attaching vertex shader"<<endl;
-    if (!mShaders.attachShader("shaderData/fragment.glsl", GL_FRAGMENT_SHADER))
+    if (!mShaders.attachShader("data/shaderData/fragment.glsl", GL_FRAGMENT_SHADER))
         cout << "Error attaching fragment shader"<<endl;
     if (!mShaders.link())
         cout<<"Error linking shader program"<<endl;
@@ -50,11 +50,11 @@ void mainRender(){
     //mShaders.link();
 
 
-    if (!lineShader.attachShader("shaderData/lineVert.glsl", GL_VERTEX_SHADER))
+    if (!lineShader.attachShader("data/shaderData/lineVert.glsl", GL_VERTEX_SHADER))
         cout << "Error attaching vertex shader"<<endl;
-    if (!lineShader.attachShader("shaderData/geometry.glsl",GL_GEOMETRY_SHADER))
+    if (!lineShader.attachShader("data/shaderData/geometry.glsl",GL_GEOMETRY_SHADER))
         cout << "Error attaching geometry shader"<<endl;
-    if (!lineShader.attachShader("shaderData/lineFrag.glsl", GL_FRAGMENT_SHADER))
+    if (!lineShader.attachShader("data/shaderData/lineFrag.glsl", GL_FRAGMENT_SHADER))
         cout << "Error attaching fragment shader"<<endl;
     if (!lineShader.link())
         cout<<"Error linking shader program"<<endl;
@@ -65,6 +65,7 @@ void mainRender(){
     loadImage(&mTexture,&imageWidth,&imageHeight);
     // Set up vertex shaderData (and buffer(s)) and attribute pointers
     Mesh imagePlane=genImagePlane(imageWidth,imageHeight);
+//    Mesh imagePlane=genImagePlane(1000,1000);
 
     glBindTexture(GL_TEXTURE_2D, mTexture);
     vertexArray verts(imagePlane.vertices.size()*imagePlane.vertices[0].size()/3);
@@ -129,7 +130,7 @@ void drawCurves() {
             sLines.addBuffer("t", 2, splines[i].texture);
             glBindVertexArray(sLines.id);
             //glLineWidth(50.0f);
-            glDrawArrays(GL_LINE_STRIP_ADJACENCY_EXT, 0, sLines.count);
+            glDrawArrays(GL_LINE_STRIP_ADJACENCY, 0, sLines.count);
             //glEnable(GL_PROGRAM_POINT_SIZE);
             glBindVertexArray(0);
         }

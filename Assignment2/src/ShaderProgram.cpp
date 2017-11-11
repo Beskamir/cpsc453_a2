@@ -9,11 +9,12 @@ ShaderProgram::~ShaderProgram(){
 }
 
 bool ShaderProgram::attachShader(string path, GLenum type){
-	if (id <= 0) {
+	if (id == 0) {
 		id = glCreateProgram();
 		//if (OpenGL::error("glCreateProgram"))
 		//	return false;
 	}
+//	cout<<id<<endl;
 
 	std::ifstream in(path);
 	string buffer = [&in] {
@@ -22,6 +23,8 @@ bool ShaderProgram::attachShader(string path, GLenum type){
 		return ss.str();
 	}();
 	const char *buffer_array[] = { buffer.c_str() };
+
+
 
 	GLuint shader = glCreateShader(type);
 	//if (OpenGL::error("glCreateShader"))
@@ -46,10 +49,10 @@ bool ShaderProgram::attachShader(string path, GLenum type){
 		cerr << "ERROR compiling shader " << shader << " :" << endl;
 		cerr << info << endl;
 	}
-
 	// Attach shader
-	glAttachShader(id, shader);
-	//if (OpenGL::error("glAttachShader"))
+    glAttachShader(id, shader);
+//    cout<<id<<":"<<shader<<endl;
+    //if (OpenGL::error("glAttachShader"))
 	//	return false;
 	return true;
 }
@@ -61,6 +64,7 @@ bool ShaderProgram::link(){
 	glLinkProgram(id);
 	//if (OpenGL::error("glLinkProgram"))
 	//	return false;
+//    cout<<"Linking: "<<id<<endl;
 
 	GLint state = 0;
 	glGetProgramiv(id, GL_LINK_STATUS, &state);

@@ -21,17 +21,19 @@ void loadImage(GLuint *mTexture, int *imageWidth, int *imageHeight) {
     //glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_WRAP_BORDER);
     //glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_WRAP_BORDER);
 
-    //string filename="imageData/texture.jpg";
-    //string filename="imageData/widerImage.jpg";
-    //string filename="imageData/tallerImage.jpg";
-    //string filename="imageData/Nihilus.jpg";
-    //string filename="imageData/GeraltAndCiri.jpg";
-    //string filename="imageData/CaliforniaCondor.jpg";
-    string filename="imageData/Tower.png";
+//    string filename="data/imageData/texture.jpg";
+//    string filename="data/imageData/widerImage.jpg";
+//    string filename="data/imageData/tallerImage.jpg";
+//    string filename="data/imageData/Nihilus.jpg";
+//    string filename="data/imageData/GeraltAndCiri.jpg";
+//    string filename="data/imageData/CaliforniaCondor.jpg";
+    string filename="data/imageData/Tower.png";
+//    cout<<filename.c_str()<<endl;
     unsigned char* image = stbi_load(filename.c_str(), imageWidth, imageHeight, &imageLayers, STBI_rgb);
 
     if(image == nullptr){
         printf("Failed to load texture\n");
+//        return;
         exit(-1);
     }
 
@@ -43,7 +45,8 @@ void loadImage(GLuint *mTexture, int *imageWidth, int *imageHeight) {
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, *imageWidth, *imageHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
     else{
         printf("Texture not rgb or rgba\n");
-        exit(-1);
+        return;
+//        exit(-1);
     }
     glGenerateMipmap(GL_TEXTURE_2D);
     //glActiveTexture(GL_TEXTURE0);
