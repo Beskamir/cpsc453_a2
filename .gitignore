@@ -4,6 +4,14 @@ Assignment2/cmake-build-debug/*
 ## Directory-based project format:
 Assignment2/.idea/*
 
-##Ignore the exe.
+##Ignore the exe
 Assignment2/Assignment2
 Assignment2/Assignment2.exe
+
+##Ignore stuff cmake on linux makes
+Assignment2/CMakeCache.txt
+Assignment2/CMakeFiles/
+Assignment2/Makefile
+Assignment2/cmake_install.cmake
+Assignment2/deps/glm/glm.pc
+Assignment2/deps/glm/glm/glm_dummy
